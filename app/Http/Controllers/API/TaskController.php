@@ -32,6 +32,8 @@ class TaskController extends Controller
         $task = new Task;
         $task->title = $request->input('title');
         $task->description = $request->input('description');
+        $task->order = $request->input('order');
+        $task->column_id = $request->input('column_id');
         $task->save();
         return response()->json($task);
     }
