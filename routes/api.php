@@ -19,6 +19,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+/* Route::any('proxy/{url}', function ($url) {
+    $proxyUrl = urldecode($url);
+    $response = Http::withHeaders(request()->header())
+        ->withoutVerifying()
+        ->send(request()->method(), $proxyUrl, [
+            'timeout' => 30,
+        ]);
+
+    return $response->body();
+})->where('url', '.*'); */
+
+protected $routeMiddleware = [
+    'CORS' => \App\Http\Middleware\CORS::class
+]
+
 Route::get('/columns/getColumnsByBoard/{id}', [ColumnController::class, 'getColumnsByBoard']);
 Route::get('/tasks/getTasksByColumn/{id}', [TaskController::class, 'getTasksByColumn']);
 Route::resource('/boards', BoardController::class);
