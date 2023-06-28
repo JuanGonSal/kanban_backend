@@ -31,7 +31,8 @@ class ColumnController extends Controller
         //
         $column = new Column;
         $column->name = $request->input('name');
-        $column->description = $request->input('description');
+        $column->order = $request->input('order');
+        $column->board_id = $request->input('board_id');
         $column->save();
         return response()->json($column);
     }
@@ -61,7 +62,8 @@ class ColumnController extends Controller
         //
         $column = Column::findOrFail($id);
         $column->name = $request->input('name');
-        $column->description = $request->input('description');
+        $column->order = $request->input('order');
+        $column->board_id = $request->input('board_id');
         $column->save();
         return response()->json($column);
     }
