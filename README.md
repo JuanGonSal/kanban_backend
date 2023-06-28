@@ -8,9 +8,9 @@
     composer install
 - Renombrar .env.example por .env e introducir los parametros del entorno (Conexión con BBDD)
 - Ejecutar: 
-    php artisan key:generate
-    php artisan migrate
-    php artisan serve
+    * php artisan key:generate
+    * php artisan migrate
+    * php artisan serve
 
 ## Autor
 Juan González Salgueiro
