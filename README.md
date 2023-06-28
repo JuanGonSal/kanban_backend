@@ -5,12 +5,12 @@
 
 - Clonar repositorio
 - Desde la raíz del proyecto descargado ejecutar: 
-    composer install
+    <p>composer install</p>
 - Renombrar .env.example por .env e introducir los parametros del entorno (Conexión con BBDD)
 - Ejecutar: 
-    <li>php artisan key:generate</li>
-    <li>php artisan migrate</li>
-    <li>php artisan serve</li>
+    <p>php artisan key:generate</p>
+    <p>php artisan migrate</p>
+    <p>php artisan serve</p>
 
 ## Autor
 Juan González Salgueiro
