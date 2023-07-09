@@ -3,6 +3,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,21 +15,26 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::group([
+    'middleware' => 'cors',
+    'prefix' => 'auth'
+    ], function ($router) {
+        Route::post('login', [AuthController::class, 'login']);
+        Route::post('register', [AuthController::class, 'register']);
+        Route::post('logout', [AuthController::class, 'logout']);
+        Route::post('refresh', [AuthController::class, 'refresh']);
+        Route::get('user-profile', [AuthController::class, 'userProfile']);
+});
+
+/* Route::post('/tokens/create', function (Request $request) {
+    $token = $request->user()->createToken($request->token_name);
+ 
+    return ['token' => $token->plainTextToken];
+}); */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-/* Route::any('proxy/{url}', function ($url) {
-    $proxyUrl = urldecode($url);
-    $response = Http::withHeaders(request()->header())
-        ->withoutVerifying()
-        ->send(request()->method(), $proxyUrl, [
-            'timeout' => 30,
-        ]);
-
-    return $response->body();
-})->where('url', '.*'); */
 
 Route::middleware(['cors'])->group(function () {
     Route::get('/columns/getColumnsByBoard/{id}', [ColumnController::class, 'getColumnsByBoard']);
