@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -44,15 +43,19 @@ class AuthController extends Controller
             $user = Auth::user(); 
             $success['token'] =  $user->createToken('MyApp')->plainTextToken; 
             $success['name'] =  $user->name;
-   
-            return $this->sendResponse($success, 'User login successfully.');
+            $success['roles'] = $user->roles;
+            return $success;
         } 
         else{ 
-            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
+            return $this->sendError('No autorizado.', ['error'=>'Unauthorised']);
         } 
     }
     
     public function userProfile() {
         return response()->json(auth('sanctum')->user());
+    }
+    
+    public function getRoles() {
+        return response()->json(auth('sanctum')->user()->getRoleNames());
     }
 }

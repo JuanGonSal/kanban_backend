@@ -20,4 +20,9 @@ class Task extends Model
     {
         return $this->belongsTo(Column::class);
     }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 }

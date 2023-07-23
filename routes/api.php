@@ -18,22 +18,25 @@ use App\Http\Controllers\API\AuthController;
 Route::group([
     'middleware' => 'cors',
     'prefix' => 'auth'
-    ], function ($router) {
+    ], function () {
         Route::post('login', [AuthController::class, 'login']);
         Route::post('register', [AuthController::class, 'register']);
         Route::post('logout', [AuthController::class, 'logout']);
         Route::post('refresh', [AuthController::class, 'refresh']);
-        Route::get('user-profile', [AuthController::class, 'userProfile']);
+/*         Route::get('user-profile', [AuthController::class, 'userProfile']); */
 });
 
-/* Route::post('/tokens/create', function (Request $request) {
-    $token = $request->user()->createToken($request->token_name);
- 
-    return ['token' => $token->plainTextToken];
+/* Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
 }); */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group([
+    'middleware' => 'auth:sanctum'
+    ], function () {
+        Route::get('/users_inactive', [UserController::class, 'getUsersInactive']);
+        Route::resource('/users', UserController::class);
+        Route::resource('/roles', RoleController::class);
+        Route::resource('/teams', TeamController::class);
 });
 
 Route::middleware(['cors'])->group(function () {
@@ -42,5 +45,6 @@ Route::middleware(['cors'])->group(function () {
     Route::resource('/boards', BoardController::class);
     Route::resource('/columns', ColumnController::class);
     Route::resource('/tasks', TaskController::class);
+    Route::resource('/tags', TagController::class);
 });
 
