@@ -52,7 +52,10 @@ class AuthController extends Controller
     }
     
     public function userProfile() {
-        return response()->json(auth('sanctum')->user());
+        $user = auth('sanctum')->user();
+        $user['roles'] = $user->roles;
+
+        return response()->json($user);
     }
     
     public function getRoles() {

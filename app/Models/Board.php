@@ -13,4 +13,9 @@ class Board extends Model
     {
         return $this->hasMany(Column::class);
     }
+
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
+    }
 }

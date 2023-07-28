@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\Board;
+use App\Models\Column;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Board;
-
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
 class BoardController extends Controller
 {
     /**
@@ -16,8 +18,20 @@ class BoardController extends Controller
     public function index()
     {
         //
-        $boards = Board::all();
-        return response()->json($boards);
+        $user = Auth::user();
+        if ($user) {
+            if ($user->hasRole('admin')){
+                return Board::with('team')->get();
+            }
+
+            $boards = $user->teams->flatMap(function ($team) {
+                return $team->boards;
+            });
+
+            return response()->json($boards);
+        }
+        /* $boards = Board::with('team')->get(); */
+        return false;
     }
 
     /**
@@ -33,6 +47,25 @@ class BoardController extends Controller
         $board->name = $request->input('name');
         $board->description = $request->input('description');
         $board->save();
+
+        $column = new Column;
+        $column->name = 'Backlog';
+        $column->order = 10;
+        $column->board_id = $board->id;
+        $column->save();
+
+        $column = new Column;
+        $column->name = 'Doing';
+        $column->order = 20;
+        $column->board_id = $board->id;
+        $column->save();
+
+        $column = new Column;
+        $column->name = 'Done';
+        $column->order = 30;
+        $column->board_id = $board->id;
+        $column->save();
+
         return response()->json($board);
     }
 
@@ -61,6 +94,7 @@ class BoardController extends Controller
         //
         $board = Board::findOrFail($id);
         $board->name = $request->input('name');
+        $board->team_id = $request->input('team_id');
         $board->description = $request->input('description');
         $board->save();
         return response()->json($board);

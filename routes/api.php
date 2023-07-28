@@ -23,7 +23,7 @@ Route::group([
         Route::post('register', [AuthController::class, 'register']);
         Route::post('logout', [AuthController::class, 'logout']);
         Route::post('refresh', [AuthController::class, 'refresh']);
-/*         Route::get('user-profile', [AuthController::class, 'userProfile']); */
+        Route::get('user-profile', [AuthController::class, 'userProfile']);
 });
 
 /* Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -37,9 +37,7 @@ Route::group([
         Route::resource('/users', UserController::class);
         Route::resource('/roles', RoleController::class);
         Route::resource('/teams', TeamController::class);
-});
 
-Route::middleware(['cors'])->group(function () {
     Route::get('/columns/getColumnsByBoard/{id}', [ColumnController::class, 'getColumnsByBoard']);
     Route::get('/tasks/getTasksByColumn/{id}', [TaskController::class, 'getTasksByColumn']);
     Route::resource('/boards', BoardController::class);
