@@ -54,6 +54,7 @@ class AuthController extends Controller
     public function userProfile() {
         $user = auth('sanctum')->user();
         $user['roles'] = $user->roles;
+        $user['teams'] = $user->teams;
 
         return response()->json($user);
     }

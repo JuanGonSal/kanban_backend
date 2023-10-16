@@ -21,7 +21,7 @@ class UserController extends Controller
     }
 
     public function show($id) {
-        return User::with('roles')->findOrFail($id);
+        return User::with('roles')->with('teams')->findOrFail($id);
     }
 
     public function store(Request $request) {

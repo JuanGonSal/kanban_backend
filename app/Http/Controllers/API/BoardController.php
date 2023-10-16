@@ -46,6 +46,8 @@ class BoardController extends Controller
         $board = new Board;
         $board->name = $request->input('name');
         $board->description = $request->input('description');
+        $team = $request->input('team');
+        $board->team_id = $team['id'];
         $board->save();
 
         $column = new Column;
