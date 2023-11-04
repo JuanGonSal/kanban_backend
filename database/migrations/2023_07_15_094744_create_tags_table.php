@@ -19,14 +19,14 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('task_tag', function (Blueprint $table) {
+        Schema::create('tag_task', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('task_id');
             $table->unsignedBigInteger('tag_id');
             $table->timestamps();
 
-            $table->foreign('task_id')->references('id')->on('tasks');
-            $table->foreign('tag_id')->references('id')->on('tags');
+            $table->foreign('task_id')->references('id')->on('tasks')->onDelete('CASCADE');
+            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('CASCADE');
         });
     }
 
@@ -37,6 +37,10 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::table('tag_task', function (Blueprint $table) {
+            $table->dropForeign(['task_id']);
+            $table->dropForeign(['tag_id']);
+        });
         Schema::dropIfExists('task_tag');
         Schema::dropIfExists('tags');
     }

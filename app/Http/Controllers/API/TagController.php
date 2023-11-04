@@ -16,6 +16,8 @@ class TagController extends Controller
     public function index()
     {
         //
+        $tags = Tag::all();
+        return response()->json($tags);
     }
 
     /**
@@ -79,8 +81,18 @@ class TagController extends Controller
      * @param  \App\Models\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tag $tag)
+    public function destroy($id)
     {
         //
+        $tag = Tag::findOrFail($id);
+        $tag->delete();
+        return response()->json(null, 204);
+    }
+
+    public function getTagsByTask($taskId)
+    {
+        //
+        $tags = Tag::where('task_id', $taskId)->get();
+        return response()->json($tags);
     }
 }

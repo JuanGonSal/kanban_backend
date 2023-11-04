@@ -40,6 +40,7 @@ Route::group([
 
     Route::get('/columns/getColumnsByBoard/{id}', [ColumnController::class, 'getColumnsByBoard']);
     Route::get('/tasks/getTasksByColumn/{id}', [TaskController::class, 'getTasksByColumn']);
+    Route::post('/tasks/addTagsToTask/{id}', [TaskController::class, 'addTagsToTask']);
     Route::resource('/boards', BoardController::class);
     Route::resource('/columns', ColumnController::class);
     Route::resource('/tasks', TaskController::class);

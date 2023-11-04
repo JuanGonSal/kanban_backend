@@ -83,7 +83,16 @@ class TaskController extends Controller
     public function getTasksByColumn($columndId)
     {
         //
-        $tasks = Task::where('column_id', $columndId)->get();
+        $tasks = Task::where('column_id', $columndId)->with('tags')->get();
         return response()->json($tasks);
+    }
+    
+    public function addTagsToTask($taskId, Request $request)
+    {
+        //
+        $task = Task::find($taskId);
+        $data = $request->all();
+        $tagsIds = collect($data)->pluck('id');
+        return $task->tags()->sync($tagsIds);
     }
 }
