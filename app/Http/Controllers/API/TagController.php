@@ -39,6 +39,10 @@ class TagController extends Controller
     public function store(Request $request)
     {
         //
+        $tag = new Tag;
+        $tag->name = $request->input('name');
+        $tag->save();
+        return response()->json($tag);
     }
 
     /**
@@ -73,6 +77,9 @@ class TagController extends Controller
     public function update(Request $request, Tag $tag)
     {
         //
+        $tag = Tag::findOrFail($request->id);
+        $tag->update($request->all());
+        return response()->json($tag);
     }
 
     /**
