@@ -18,8 +18,13 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->integer('order');
+            $table->date('limit')->nullable();
             $table->unsignedBigInteger('column_id');
+            $table->unsignedBigInteger('created_user_id')->nullable();
+            $table->unsignedBigInteger('assigned_user_id')->nullable();
             $table->foreign('column_id')->references('id')->on('columns')->onDelete('cascade');
+            $table->foreign('created_user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('assigned_user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

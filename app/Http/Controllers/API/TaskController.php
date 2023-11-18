@@ -16,7 +16,10 @@ class TaskController extends Controller
     public function index()
     {
         //
-        $tasks = Task::all();
+        $tasks = Task::all()                        
+                        ->with('tags')
+                        ->with('createdBy')
+                        ->with('assignedTo');
         return response()->json($tasks);
     }
 
@@ -34,6 +37,8 @@ class TaskController extends Controller
         $task->description = $request->input('description');
         $task->order = $request->input('order');
         $task->column_id = $request->input('column_id');
+        $task->created_user_id = $request->input('created_user_id');
+        $task->assigned_user_id = $request->input('assigned_user_id');
         $task->save();
         return response()->json($task);
     }
@@ -63,7 +68,8 @@ class TaskController extends Controller
         //
         $task = Task::findOrFail($id);
         $task->update($request->all());
-        return response()->json($request);
+        $task = Task::with('assignedTo')->find($id);
+        return response()->json($task);
     }
 
     /**
@@ -83,7 +89,11 @@ class TaskController extends Controller
     public function getTasksByColumn($columndId)
     {
         //
-        $tasks = Task::where('column_id', $columndId)->with('tags')->get();
+        $tasks = Task::where('column_id', $columndId)
+                        ->with('tags')
+                        ->with('createdBy')
+                        ->with('assignedTo')
+                        ->get();
         return response()->json($tasks);
     }
     
