@@ -37,9 +37,13 @@ class TaskController extends Controller
         $task->description = $request->input('description');
         $task->order = $request->input('order');
         $task->column_id = $request->input('column_id');
-        $task->created_user_id = $request->input('created_user_id');
-        $task->assigned_user_id = $request->input('assigned_user_id');
+        $task->created_user_id = auth('sanctum')->user()->id;
+        $task->assigned_user_id = auth('sanctum')->user()->id;
         $task->save();
+
+        $task = Task::with('tags')
+                    ->with('createdBy')
+                    ->with('assignedTo')->find($task->id);
         return response()->json($task);
     }
 
@@ -68,7 +72,9 @@ class TaskController extends Controller
         //
         $task = Task::findOrFail($id);
         $task->update($request->all());
-        $task = Task::with('assignedTo')->find($id);
+        $task = Task::with('tags')
+        ->with('createdBy')
+        ->with('assignedTo')->find($id);
         return response()->json($task);
     }
 
